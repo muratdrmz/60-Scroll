@@ -52,12 +52,31 @@ window.addEventListener('scroll',()=>{
 
  scrollLinks.forEach((link)=>{
   link.addEventListener('click',(e)=>{
+    // prevent default
+    e.preventDefault();
+    // navigate to specific spot
+    const id = e.currentTarget.getAttribute("href").slice(1);
+    const element = document.getElementById(id);
 
-   e.preventDefault();
+    // calculate the heights
+      const navHeight = navbar.getBoundingClientRect().height;
+      const containerHeight = linksContainer.getBoundingClientRect().height;
+      const fixedNav = navbar.classList.contains("fixed-nav");
+      let position = element.offsetTop - navHeight;
 
-   console.log(e.currentTarget)
+      if (!fixedNav) {
+        position = position - navHeight;
+      }
+      if (navHeight > 82) {
+        position = position + containerHeight;
+      }
 
-   console.log(e.currentTarget.getAttribute("href").slice(1));
-   console.log(e.currentTarget.href.slice(-4));
+      window.scrollTo({
+        left: 0,
+        top: position,
+      });
+      // close
+      linksContainer.style.height = 0;
+
   })
  })
